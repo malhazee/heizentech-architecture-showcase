@@ -7,7 +7,7 @@
 [![AI-Agent Ready](https://img.shields.io/badge/AI--Agents-Tool%20Calling%20%26%20Function%20Calling-FF6F00?logo=openai)](./ARCHITECTURE.md#ai-agents--tool-calling-layer)
 [![Live Demo](https://img.shields.io/badge/Production-Live%20Platform-success)](https://heizentech.com)
 
-> **Notice:** This repository is an **Architectural Showcase & Engineering Blueprint** representing the production design of the **Heizentech SaaS Platform**. The underlying business repository is maintained as private intellectual property. This showcase is compiled specifically for technical evaluation and the **AI Agents Hackathon Committee**.
+> **Architectural Blueprint:** This repository contains the public architecture specification, domain contracts, and core design patterns of the **Heizentech Cloud Platform**. The core enterprise business implementation is maintained within a proprietary repository, while this repository serves as a reference architecture for multi-tenant isolation, high-throughput caching, and autonomous AI-agent runtime integration.
 
 ---
 
@@ -18,10 +18,10 @@
 
 ---
 
-## 🎯 Executive Overview
-**Heizentech** is a high-performance, cloud-native **Multi-Tenant SaaS E-Commerce Platform** built from the ground up with **.NET 9 Web API** and **Next.js 16 (App Router)**. 
+## 🎯 Platform Overview
+**Heizentech** is an enterprise-grade, cloud-native **Multi-Tenant SaaS E-Commerce Operating System** designed with **.NET 9 Web API** and **Next.js 16 (App Router)**. 
 
-The platform is purpose-built to provide isolated store environments (with custom subdomains, catalogs, order management, and PWA push notifications) while acting as an **execution environment for Autonomous AI Agents**.
+The architecture provides dynamic store provisioning, subdomain routing, and automated data partitioning, while exposing an enterprise **Tool-Calling Interface for Autonomous AI Agents**.
 
 ```
                            ┌──────────────────────────────────────────────┐
@@ -45,18 +45,18 @@ The platform is purpose-built to provide isolated store environments (with custo
 
 ---
 
-## 🤖 Why this Architecture Wins in an AI Agents Hackathon
+## 🤖 Autonomous AI Agents & Tool-Calling Runtime
 
-In AI agent competitions, **models cannot deliver value in a vacuum**. An autonomous agent requires an enterprise-grade environment equipped with tools, state persistence, and real-time execution capabilities:
+The platform was architected from inception to serve as an execution environment for AI agents (integrating with frameworks such as LangGraph, AutoGen, CrewAI, and Semantic Kernel):
 
-1. **Rich Tool-Calling Interface (25+ Actionable APIs):**
-   - Agents can programmatically inspect inventory, update pricing, generate promo codes, process orders, and dispatch push notifications via standard OpenAPI specs.
-2. **Deterministic Data Isolation (Multi-Tenancy):**
-   - EF Core Global Query Filters ensure that an AI Agent operating on behalf of Tenant A can *never* leak or access data from Tenant B.
-3. **Agent Short-Term & Working Memory (Redis 7):**
-   - High-throughput Redis caching serves as the sub-millisecond scratchpad for agent reasoning traces, conversation context, and rate limiting.
+1. **Deterministic Tool Calling (25+ Actionable APIs):**
+   - Autonomous agents can programmatically inspect live inventory, adjust prices, configure promotional campaigns, and trigger notifications via OpenAPI schemas.
+2. **Strict Multi-Tenant Isolation:**
+   - EF Core Global Query Filters guarantee zero cross-tenant data leakage. Agents operating for Tenant A can never query or mutate Tenant B's data.
+3. **Low-Latency Working Memory (Redis 7):**
+   - High-throughput Redis caching serves as the sub-millisecond scratchpad for agent reasoning traces, conversation context, and session rate limiting.
 4. **Proactive Event Triggers (Firebase Cloud Messaging):**
-   - Enables proactive agent behavior (e.g., an autonomous marketing agent detecting an abandoned cart or price drop and dispatching real-time Web Push alerts).
+   - Supports proactive agent behaviors (e.g., an autonomous marketing agent detecting an abandoned cart or inventory restock and dispatching real-time Web Push alerts).
 
 ---
 
@@ -81,7 +81,7 @@ This repository contains sanitized architectural blueprints in [`/src`](./src):
 
 ```text
 showcase-repo/
-├── README.md                              <-- Project Overview & Hackathon Positioning
+├── README.md                              <-- System Overview & Technical Highlights
 ├── ARCHITECTURE.md                        <-- In-depth Architectural Design Specification
 └── src/
     ├── Backend/
@@ -115,7 +115,21 @@ Developers cannot accidentally query another store's data—isolation is enforce
 ### 3. Production PWA & Dynamic Multi-Tenant Manifests
 The frontend dynamically serves tailored Web Manifests (`/manifest.webmanifest`) based on the active tenant's branding, color palette, and icons, enabling custom app installation for every single merchant.
 
+---
+
+## 📊 Core Architectural Capabilities & Specifications
+
+| Capability | Architecture Implementation |
+| :--- | :--- |
+| **Agent Tool Calling** | Full RESTful OpenAPI surface ready for LLM Function Calling |
+| **System Architecture** | Enterprise Multi-Tenant SaaS with Clean Architecture principles |
+| **Low-Latency Backend** | .NET 9 asynchronous processing capable of thousands of RPS |
+| **Cloud & DevOps** | Containerized micro-services with Traefik routing and health probes |
+| **Full-Stack Integration** | Seamless communication between .NET 9 Web API and modern React 19/Next.js 16 |
+
+---
+
 ## 📜 Intellectual Property & Contact
-- **Architecture & System Design:** Mosabalhazeem
+- **Architecture & System Design:** Mosab Alhazeem
 - **Contact:** [mosabalhazeem30@gmail.com](mailto:mosabalhazeem30@gmail.com)
 - **Live Platform:** [https://heizentech.com](https://heizentech.com)
