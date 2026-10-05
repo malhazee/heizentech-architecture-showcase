@@ -115,21 +115,7 @@ Developers cannot accidentally query another store's data—isolation is enforce
 ### 3. Production PWA & Dynamic Multi-Tenant Manifests
 The frontend dynamically serves tailored Web Manifests (`/manifest.webmanifest`) based on the active tenant's branding, color palette, and icons, enabling custom app installation for every single merchant.
 
----
-
-## 🏆 Hackathon Competency Matrix
-
-| Skill Evaluated | Demonstration in Heizentech Architecture |
-| :--- | :--- |
-| **Agent Tool Calling** | Full RESTful OpenAPI surface ready for LLM Function Calling |
-| **System Architecture** | Enterprise Multi-Tenant SaaS with Clean Architecture principles |
-| **Low-Latency Backend** | .NET 9 asynchronous processing capable of thousands of RPS |
-| **Cloud & DevOps** | Containerized micro-services with Traefik routing and health probes |
-| **Full-Stack Mastery** | Seamless integration between .NET 9 Web API and modern React 19/Next.js 16 |
-
----
-
 ## 📜 Intellectual Property & Contact
-- **Architecture & System Design:** Taqialdeen Alhazeem
-- **Contact:** [taqialhazeem@gmail.com](mailto:taqialhazeem@gmail.com)
+- **Architecture & System Design:** Mosabalhazeem
+- **Contact:** [taqialhazeem@gmail.com](mailto:mosabalhazeem30@gmail.com)
 - **Live Platform:** [https://heizentech.com](https://heizentech.com)
