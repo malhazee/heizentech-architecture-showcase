@@ -1,0 +1,96 @@
+version: '3.8'
+
+# =============================================================================
+# Heizentech Multi-Tenant Production Topology
+# =============================================================================
+
+networks:
+  heizentech_net:
+    driver: bridge
+  coolify:
+    external: true
+
+volumes:
+  sql_data:
+  redis_data:
+
+services:
+  # ---------------------------------------------------------------------------
+  # 1. SQL Server 2022 Database Tier
+  # ---------------------------------------------------------------------------
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: heizentech_db
+    restart: always
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_PID=Express
+      - SA_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - sql_data:/var/opt/mssql
+    networks:
+      - heizentech_net
+
+  # ---------------------------------------------------------------------------
+  # 2. Redis 7 High-Speed Caching & Agent Working Memory
+  # ---------------------------------------------------------------------------
+  redis:
+    image: redis:7-alpine
+    container_name: heizentech_redis
+    restart: always
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    volumes:
+      - redis_data:/data
+    networks:
+      - heizentech_net
+
+  # ---------------------------------------------------------------------------
+  # 3. .NET 9 Web API Engine (Microservice Backend)
+  # ---------------------------------------------------------------------------
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    container_name: heizentech_api
+    restart: always
+    depends_on:
+      - db
+      - redis
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__DefaultConnection=Server=db,1433;Database=HeizentechDb;User Id=sa;Password=${DB_PASSWORD};TrustServerCertificate=True;
+      - Redis__ConnectionString=redis:6379
+      - JwtSettings__Secret=${JWT_SECRET}
+    networks:
+      - heizentech_net
+      - coolify
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.api.rule=Host(`api.heizentech.com`)"
+      - "traefik.http.routers.api.entrypoints=websecure"
+      - "traefik.http.routers.api.tls=true"
+      - "traefik.http.services.api.loadbalancer.server.port=5100"
+
+  # ---------------------------------------------------------------------------
+  # 4. Next.js 16 Web Tier & Multi-Tenant Storefront Router
+  # ---------------------------------------------------------------------------
+  web:
+    build:
+      context: ./heizentech-web
+      dockerfile: Dockerfile
+    container_name: heizentech_web
+    restart: always
+    depends_on:
+      - api
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_API_URL=https://api.heizentech.com/api
+    networks:
+      - heizentech_net
+      - coolify
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.web.rule=HostRegexp(`{subdomain:[a-z0-9-]+}.heizentech.com`) || Host(`heizentech.com`)"
+      - "traefik.http.routers.web.entrypoints=websecure"
+      - "traefik.http.routers.web.tls=true"
+      - "traefik.http.services.web.loadbalancer.server.port=3000"
