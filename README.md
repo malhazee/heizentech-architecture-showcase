@@ -117,5 +117,5 @@ The frontend dynamically serves tailored Web Manifests (`/manifest.webmanifest`)
 
 ## 📜 Intellectual Property & Contact
 - **Architecture & System Design:** Mosabalhazeem
-- **Contact:** [taqialhazeem@gmail.com](mailto:mosabalhazeem30@gmail.com)
+- **Contact:** [mosabalhazeem30@gmail.com](mailto:mosabalhazeem30@gmail.com)
 - **Live Platform:** [https://heizentech.com](https://heizentech.com)
